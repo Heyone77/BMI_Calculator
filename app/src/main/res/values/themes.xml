@@ -1,0 +1,10 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.BMICalc" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimaryVariant">@color/layout_background</item>
+        <item name="android:statusBarColor" tools:taretApi="l">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="Theme.BMICalc" parent="Base.Theme.BMICalc" />
+</resources>
