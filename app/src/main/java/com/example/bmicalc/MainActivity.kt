@@ -18,15 +18,15 @@ class MainActivity : AppCompatActivity() {
         val heightText = findViewById<EditText>(R.id.etHeight)
         val calcButton = findViewById<Button>(R.id.btnCalculate)
 
+
         calcButton.setOnClickListener() {
             val weight = weightText.text.toString()
             val height = heightText.text.toString()
 
             if(validateInput(weight,height)){
-                val bmi = weight.toFloat()/((height.toFloat()/100)*(height.toFloat()/100))
-                val bmi2Digit = String.format("%.2f", bmi).toFloat()
+                val bmi = weight.toDouble()/((height.toDouble()/100)*(height.toDouble()/100))
 
-                displayResult(bmi2Digit)
+                displayResult(bmi)
             }
         }
     }
@@ -47,19 +47,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayResult(bmi:Float){
-        val resultIndex = findViewById<TextView>(R.id.tvIndex)
-        val resultDescrition = findViewById<TextView>(R.id.tvResult)
-        val additionalInfo = findViewById<TextView>(R.id.tvInfo)
 
-        resultIndex.text = bmi.toString()
-        additionalInfo.text = "Normal range is 18.5 - 24.9"
+    private fun calculateBmiResult(bmi: Double): Pair<String, Int> {
 
         var resultText = ""
         var color = 0
 
-        when{
-            bmi<18.50 -> {
+        when {
+            bmi < 18.50 -> {
                 resultText = "Underweight"
                 color = R.color.underweight
             }
@@ -67,18 +62,35 @@ class MainActivity : AppCompatActivity() {
                 resultText = "Normal Weight"
                 color = R.color.normal
             }
-            bmi in 25.0..29.99 ->{
+            bmi in 25.0..29.99 -> {
                 resultText = "Overweight"
                 color = R.color.overweight
             }
-            bmi>=30 ->{
+            bmi >= 30 -> {
                 resultText = "Obese"
                 color = R.color.obese
             }
+
         }
-        resultDescrition.text = resultText
-        resultDescrition.setTextColor(ContextCompat.getColor(this, color))
+
+        return Pair(resultText, color)
     }
 
+    private fun displayResult(bmi:Double){
+        val resultIndex = findViewById<TextView>(R.id.tvIndex)
+        val resultDescrition = findViewById<TextView>(R.id.tvResult)
+        val additionalInfo = findViewById<TextView>(R.id.tvInfo)
 
+        val bmi2Digit = "%.2f".format(bmi)
+        resultIndex.text = bmi2Digit.toString()
+
+
+
+        additionalInfo.text = "Normal range is 18.5 - 24.9"
+
+        var result = calculateBmiResult(bmi)
+
+        resultDescrition.text = result.first
+        resultDescrition.setTextColor(ContextCompat.getColor(this, result.second))
+    }
 }
